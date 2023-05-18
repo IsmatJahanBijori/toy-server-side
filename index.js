@@ -8,8 +8,7 @@ app.use(cors())
 
 // mongodb
 
-
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@ac-euh9qdo-shard-00-00.hbyxuz9.mongodb.net:27017,ac-euh9qdo-shard-00-01.hbyxuz9.mongodb.net:27017,ac-euh9qdo-shard-00-02.hbyxuz9.mongodb.net:27017/?ssl=true&replicaSet=atlas-ny4qda-shard-0&authSource=admin&retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -39,6 +38,14 @@ async function run() {
     // get method
     app.get('/toys', async(req, res)=>{
       const result=await toyCollection.find().toArray()
+      res.send(result)
+    })
+    // get method by id
+    app.get('/toys/:id', async(req, res)=>{
+      const id=req.params.id;
+      console.log(id)
+      const filter={_id: new ObjectId(id)}
+      const result=await toyCollection.findOne(filter)
       res.send(result)
     })
     // Send a ping to confirm a successful connection
