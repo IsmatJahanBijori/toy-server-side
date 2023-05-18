@@ -67,15 +67,19 @@ async function run() {
 
 
     // mytoys get
-    app.get('/updateToys/:id', async(req, res)=>{
-      const result=await toyCollection.findOne().toArray()
+    app.get('/myToys/:id', async(req, res)=>{
+      const id=req.params.id;
+      console.log(id)
+      const filter={_id: new ObjectId(id)}
+      const result=await toyCollection.findOne(filter)
       res.send(result)
     })
     // myToys update
 
-    app.put('/updateToys/:id', async(req, res)=>{
+    app.put('/myToys/:id', async(req, res)=>{
       const id=req.params.id;
       const filter={_id: new ObjectId(id)}
+      const options = { upsert: true };
       const updatedToys=req.body;
       const myToys={
         $set:{
@@ -85,7 +89,15 @@ async function run() {
 
         }
       }
-      const result=await toyCollection.updateOne(filter, myToys)
+      const result=await toyCollection.updateOne(filter, myToys, options)
+      res.send(result)
+    })
+
+    // delete toys
+    app.delete('/myToys/:id', async(req, res)=>{
+      const id=req.params.id;
+      const filter={_id: new ObjectId(id)}
+      const result=await toyCollection.deleteOne(filter)
       res.send(result)
     })
     // Send a ping to confirm a successful connection
