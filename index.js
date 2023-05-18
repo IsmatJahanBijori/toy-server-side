@@ -40,12 +40,27 @@ async function run() {
       const result=await toyCollection.find().toArray()
       res.send(result)
     })
+
+
     // get method by id
     app.get('/toys/:id', async(req, res)=>{
       const id=req.params.id;
       console.log(id)
       const filter={_id: new ObjectId(id)}
       const result=await toyCollection.findOne(filter)
+      res.send(result)
+    })
+
+    // to find a specific persons shop info we need to use query params
+    app.get('/myToys', async(req, res)=>{
+      // const email=req.query.email;
+      // console.log(email)
+      let query={}
+      if(req.query?.email){
+        query={email: req.query.email}
+        console.log(query)
+      }
+      const result=await toyCollection.find(query).toArray();
       res.send(result)
     })
     // Send a ping to confirm a successful connection
