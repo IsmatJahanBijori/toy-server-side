@@ -23,14 +23,14 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
     const toyCollection = client.db('toyDB').collection('AddToy')
 
     // post add a toy
     app.post('/toys', async (req, res) => {
       const newToy = req.body;
       // bhul hole bad dibo
-      body.createdAt = new Date()
+      body.createdAt = new Price()
       console.log(newToy)
       const result = await toyCollection.insertOne(newToy)
       res.send(result)
@@ -41,15 +41,12 @@ async function run() {
     const indexKeys = { price: 1 }
     const indexOption = { name: "Price" }
     const result = await toyCollection.createIndex(indexKeys, indexOption)
-    // bhul hole bad dibo end, niche theke sort o bad dibo
+    // bhul hole bad dibo end,47 no  niche theke sort o bad dibo
     // get method
     app.get('/toys', async (req, res) => {
-      const result = await toyCollection.find().sort({ createAt: 1 }).toArray()
+      const result = await toyCollection.find().toArray()
       res.send(result)
     })
-
-
-
 
 
 
@@ -58,12 +55,9 @@ async function run() {
       const searchName = req.params.text;
       const result = await toyCollection.find({
         $or: [{ toyName: { $regex: searchName, $options: "i" } }]
-      }).toArray()
+      }).sort({price:1, createdAt: -1 }).limit(20).toArray()
       res.send(result)
     })
-
-
-
 
 
 
