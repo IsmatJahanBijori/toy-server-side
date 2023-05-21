@@ -38,9 +38,9 @@ async function run() {
 
     // sorting
     // bhul hole bad dibo start
-    const indexKeys = { price: 1 }
-    const indexOption = { name: "Price" }
-    const result = await toyCollection.createIndex(indexKeys, indexOption)
+    // const indexKeys = { price: 1 }
+    // const indexOption = { name: "Price" }
+    // const result = await toyCollection.createIndex(indexKeys, indexOption)
     // bhul hole bad dibo end,47 no  niche theke sort o bad dibo
     // get method
     app.get('/toys', async (req, res) => {
